@@ -9,13 +9,17 @@ fn main() {
       return;
    }
    let filename = &args[1];
-   let max_len: usize = args[2].parse()
+   let mut max_len: usize = args[2].parse()
        .expect("Please provide a maximum length.");
 
    let mut f = File::open(filename).unwrap();
    let mut buffer = Vec::new();
 
    f.read_to_end(&mut buffer).unwrap();
+   
+   if buffer.len() < max_len {
+      max_len = buffer.len() - 1;
+   }
 
    for i in (1..max_len + 1).rev() {
       let mut matchs: usize = 0;
@@ -29,6 +33,6 @@ fn main() {
        	   }
        }
        let ioc: f64 = matchs as f64 / total as f64;
-       println!("{i:>2} {ioc:.3}%", i=i, ioc=ioc*100.0);
+       println!("{i:>4} {ioc:.3}%", i=i, ioc=ioc*100.0);
    }
 }
